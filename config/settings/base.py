@@ -3,7 +3,7 @@ from pathlib import Path
 
 # Get the base directory of the project (backend/)
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+APPS_DIR = BASE_DIR / "apps"
 # Create an environ object
 env = environ.Env(
     DEBUG=(bool, False)  # Default value for DEBUG is False (for production)
@@ -32,11 +32,21 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "django.contrib.humanize",
 ]
 
 # Third-party applications (add any external apps or libraries here)
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "django_countries",
+    "phonenumber_field",
+    "drf_spectacular",
+    "djoser",
+    "cloudinary",
+    "django_filters",
+    "djcelery_email",
+    "django_celery_beat",
 ]
 
 # Custom applications (your project's own apps go here)
@@ -62,7 +72,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [str(APPS_DIR / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -98,6 +108,15 @@ else:
         }
     }
 
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -128,11 +147,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+SITE_ID = 1
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = str(BASE_DIR / "staticfiles")
 
 
 # Default primary key field type
