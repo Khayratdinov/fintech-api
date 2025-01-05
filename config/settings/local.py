@@ -3,21 +3,43 @@ from .base import *
 from .base import BASE_DIR
 
 
-local_env = environ.Env(DEBUG=(bool, False))  # DEBUG uchun standart qiymat False
-env_path = BASE_DIR / ".envs" / ".env.local"
+ENV_FILE = os.path.join(BASE_DIR, ".envs", ".env.local")
+environ.Env.read_env(ENV_FILE)
 
-local_env.read_env(env_path)
 
-SECRET_KEY = local_env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = local_env.bool("DEBUG", default=False)
-ALLOWED_HOSTS = local_env.list("ALLOWED_HOSTS", default=[])
-SITE_NAME = local_env("SITE_NAME")
-ADMIN_URL = local_env("ADMIN_URL")
+DEBUG = env.bool("DEBUG", default=False)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+
+
+# Check if DATABASE_SQLITE is set to True in .env
+if env.bool("DATABASE_SQLITE", default=True):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",  # Use SQLite for development
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",  # Use PostgreSQL for production
+            "NAME": env("POSTGRES_DB"),
+            "USER": env("POSTGRES_USER"),
+            "PASSWORD": env("POSTGRES_PASSWORD"),
+            "HOST": env("POSTGRES_HOST"),
+            "PORT": env("POSTGRES_PORT"),
+        }
+    }
+
+
+SITE_NAME = env("SITE_NAME")
+ADMIN_URL = env("ADMIN_URL")
 
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
-EMAIL_HOST = local_env("EMAIL_HOST")
-EMAIL_PORT = local_env("EMAIL_PORT")
-DEFAULT_FROM_EMAIL = local_env("DEFAULT_FROM_EMAIL")
-DOMAIN = local_env("DOMAIN")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+DOMAIN = env("DOMAIN")
 MAX_UPLOAD_SIZE = 1 * 1024 * 1024

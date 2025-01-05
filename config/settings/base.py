@@ -1,25 +1,14 @@
 import environ
+import os
 from pathlib import Path
 
 # Get the base directory of the project (backend/)
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 APPS_DIR = BASE_DIR / "apps"
 # Create an environ object
 env = environ.Env(
     DEBUG=(bool, False)  # Default value for DEBUG is False (for production)
 )
-
-# Read the .env file
-env.read_env(BASE_DIR / ".env")
-
-# Secret key
-SECRET_KEY = env("SECRET_KEY")
-
-# Debug mode
-DEBUG = env.bool("DEBUG", default=False)
-
-# Allowed hosts
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 
 # Application definition
@@ -86,27 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-
-# Check if DATABASE_SQLITE is set to True in .env
-if env.bool("DATABASE_SQLITE", default=True):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",  # Use SQLite for development
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",  # Use PostgreSQL for production
-            "NAME": env("POSTGRES_DB"),
-            "USER": env("POSTGRES_USER"),
-            "PASSWORD": env("POSTGRES_PASSWORD"),
-            "HOST": env("POSTGRES_HOST"),
-            "PORT": env("POSTGRES_PORT"),
-        }
-    }
 
 
 PASSWORD_HASHERS = [
