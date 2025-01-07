@@ -41,6 +41,8 @@ THIRD_PARTY_APPS = [
 # Custom applications (your project's own apps go here)
 CUSTOM_APPS = [
     "apps.core",
+    'apps.user_auth',
+    'apps.user_profile',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS

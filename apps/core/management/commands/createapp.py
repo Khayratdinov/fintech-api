@@ -87,7 +87,7 @@ urlpatterns = [
 
     def add_app_to_settings(self, app_name):
         app_path = f"apps.{app_name}"
-        settings_file = "config/settings.py"
+        settings_file = "config/settings/base.py"
 
         with open(settings_file, "r") as file:
             settings_content = file.readlines()
