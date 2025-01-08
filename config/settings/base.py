@@ -1,5 +1,7 @@
 import environ
 import os
+
+from loguru import logger
 from pathlib import Path
 
 # Get the base directory of the project (backend/)
@@ -41,8 +43,8 @@ THIRD_PARTY_APPS = [
 # Custom applications (your project's own apps go here)
 CUSTOM_APPS = [
     "apps.core",
-    'apps.user_auth',
-    'apps.user_profile',
+    "apps.user_auth",
+    "apps.user_profile",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
@@ -135,3 +137,38 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # REST Framework Configuration
 REST_FRAMEWORK = {}
+
+
+LOGGING_CONFIG = None
+LOGURU_LOGGING = {
+    "handlers": [
+        {
+            "sink": BASE_DIR / "logs/debug.log",
+            "level": "DEBUG",
+            "filter": lambda record: record["level"].no <= logger.level("WARNING").no,
+            "format": "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} - "
+            "{message}",
+            "rotation": "10MB",
+            "retention": "30 days",
+            "compression": "zip",
+        },
+        {
+            "sink": BASE_DIR / "logs/error.log",
+            "level": "ERROR",
+            "format": "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} - "
+            "{message}",
+            "rotation": "10MB",
+            "retention": "30 days",
+            "compression": "zip",
+            "backtrace": True,
+            "diagnose": True,
+        },
+    ],
+}
+logger.configure(**LOGURU_LOGGING)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"loguru": {"class": "interceptor.InterceptHandler"}},
+    "root": {"handlers": ["loguru"], "level": "DEBUG"},
+}
