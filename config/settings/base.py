@@ -1,5 +1,6 @@
 import environ
 import os
+from datetime import timedelta
 
 from loguru import logger
 from pathlib import Path
@@ -171,4 +172,20 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {"loguru": {"class": "interceptor.InterceptHandler"}},
     "root": {"handlers": ["loguru"], "level": "DEBUG"},
+}
+
+
+AUTH_USER_MODEL = "user_auth.User"
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "NextGen Bank API",
+    "DESCRIPTION": "An API built for a banking system",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "LICENSE": {
+        "name": "MIT License",
+        "url": "https://opensource.org/license/mit",
+    },
 }
