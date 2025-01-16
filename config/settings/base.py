@@ -8,6 +8,7 @@ from pathlib import Path
 # Get the base directory of the project (backend/)
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 APPS_DIR = BASE_DIR / "apps"
+
 # Create an environ object
 env = environ.Env(
     DEBUG=(bool, False)  # Default value for DEBUG is False (for production)
@@ -139,7 +140,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # REST Framework Configuration
 REST_FRAMEWORK = {}
 
-
 LOGGING_CONFIG = None
 LOGURU_LOGGING = {
     "handlers": [
@@ -166,7 +166,9 @@ LOGURU_LOGGING = {
         },
     ],
 }
+
 logger.configure(**LOGURU_LOGGING)
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
