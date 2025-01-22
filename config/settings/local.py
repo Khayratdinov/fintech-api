@@ -3,14 +3,6 @@ from .base import *
 from .base import BASE_DIR
 
 
-ENV_FILE = os.path.join(BASE_DIR, ".envs", ".env.local")
-
-if os.path.exists(ENV_FILE):
-    environ.Env.read_env(ENV_FILE)
-else:
-    raise FileNotFoundError(f"{ENV_FILE} not found")
-
-
 SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env.bool("DEBUG", default=False)

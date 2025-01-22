@@ -15,6 +15,14 @@ env = environ.Env(
 )
 
 
+ENV_FILE = os.path.join(BASE_DIR, ".envs", ".env.local")
+
+if os.path.exists(ENV_FILE):
+    environ.Env.read_env(ENV_FILE)
+else:
+    raise FileNotFoundError(f"{ENV_FILE} not found")
+
+
 # Application definition
 
 # Django core applications (these are the default apps provided by Django)
@@ -47,6 +55,7 @@ CUSTOM_APPS = [
     "apps.core",
     "apps.user_auth",
     "apps.user_profile",
+    'apps.common',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
