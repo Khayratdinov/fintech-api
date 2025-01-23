@@ -1,5 +1,6 @@
 import environ
 import os
+import cloudinary
 from datetime import timedelta
 
 from loguru import logger
@@ -55,7 +56,7 @@ CUSTOM_APPS = [
     "apps.core",
     "apps.user_auth",
     "apps.user_profile",
-    'apps.common',
+    "apps.common",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
@@ -218,3 +219,13 @@ SPECTACULAR_SETTINGS = {
         "url": "https://opensource.org/license/mit",
     },
 }
+
+
+CLOUDINARY_CLOUD_NAME = env("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY = env("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET = env("CLOUDINARY_API_SECRET")
+cloudinary.config(
+    cloud_name=CLOUDINARY_CLOUD_NAME,
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_API_SECRET,
+)
