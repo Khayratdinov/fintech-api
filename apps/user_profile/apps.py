@@ -1,7 +1,11 @@
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
+
 class User_profileConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.user_profile'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.user_profile"
     verbose_name = _("User_Profile")
+
+    def ready(self) -> None:
+        import apps.user_profile.signals

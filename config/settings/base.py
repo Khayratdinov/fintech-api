@@ -1,7 +1,7 @@
 import environ
 import os
 import cloudinary
-from datetime import timedelta
+from datetime import timedelta, date
 
 from loguru import logger
 from pathlib import Path
@@ -147,7 +147,11 @@ STATIC_ROOT = str(BASE_DIR / "staticfiles")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
+DEFAULT_BIRTH_DATE = date(1900, 1, 1)
+DEFAULT_DATE = date(2000, 1, 1)
+DEFAULT_EXPIRY_DATE = date(2024, 1, 1)
+DEFAULT_COUNTRY = "UZ"
+DEFAULT_PHONE_NUMBER = "+998941234567"
 # REST Framework Configuration
 REST_FRAMEWORK = {}
 
